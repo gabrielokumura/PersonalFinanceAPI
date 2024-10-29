@@ -1,0 +1,3 @@
+ALTER TABLE transacao
+ALTER COLUMN tipo
+SET DATA TYPE SMALLINT USING tipo::smallint;
