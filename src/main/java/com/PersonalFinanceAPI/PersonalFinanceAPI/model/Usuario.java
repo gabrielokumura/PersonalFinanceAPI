@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,12 +35,22 @@ public class Usuario implements UserDetails {
 
     private boolean ativo;
 
+    private BigDecimal saldo;
     public Usuario() {
     }
     public Usuario(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.saldo = BigDecimal.ZERO;
+    }
+
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
     }
 
     public String getNome() {

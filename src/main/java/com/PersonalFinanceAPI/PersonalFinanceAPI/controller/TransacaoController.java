@@ -34,6 +34,12 @@ public class TransacaoController {
         return ResponseEntity.ok(transacoes);
     }
 
+    @GetMapping("/filtro")
+    public ResponseEntity<List<DadosListagemTransacao>> listarTransacoesPorCategoriaEPeriodo(@RequestBody DadosListarTransacoesPorCategoriaEPorPeriodo dados){
+        List<DadosListagemTransacao> transacoes = transacaoService.listarTransacoesPorPeriodoECAtegoria(dados);
+        return ResponseEntity.ok(transacoes);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Transacao> atualizarTransacao(
             @PathVariable Long id,

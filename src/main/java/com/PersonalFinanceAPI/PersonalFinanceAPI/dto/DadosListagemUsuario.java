@@ -1,7 +1,7 @@
 package com.PersonalFinanceAPI.PersonalFinanceAPI.dto;
 
-import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
+import java.math.BigDecimal;
 
-public record DadosListagemUsuario(Long id, String nome, String email) {
+public record DadosListagemUsuario(Long id, String nome, String email, BigDecimal saldo) {
 
 }

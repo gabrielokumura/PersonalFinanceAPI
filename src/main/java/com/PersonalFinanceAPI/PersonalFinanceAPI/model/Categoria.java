@@ -32,7 +32,6 @@ public class Categoria {
     private Usuario usuario;
 
     public Categoria(){
-
     }
 
     public Categoria(DadosCadastroCategoria dados, Usuario usuario) {

@@ -2,6 +2,7 @@ package com.PersonalFinanceAPI.PersonalFinanceAPI.model;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosLancarTransacao;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.TipoTransacao;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -42,6 +43,7 @@ public class Transacao {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id")
+    @JsonIgnore
     private Categoria categoria;
 
     public Transacao() {
@@ -56,6 +58,7 @@ public class Transacao {
         this.categoria = categoria;
         this.usuario = usuario;
     }
+
 
     public Long getId() {
         return id;

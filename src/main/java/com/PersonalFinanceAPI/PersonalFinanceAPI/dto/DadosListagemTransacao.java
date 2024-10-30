@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 public record DadosListagemTransacao(Long id,
                                      String descricao,
+                                     TipoTransacao tipo,
+
                                      BigDecimal valor,
                                      LocalDateTime data,
                                      String categoriaNome) {
