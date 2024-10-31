@@ -1,4 +1,6 @@
 package com.PersonalFinanceAPI.PersonalFinanceAPI.dto;
 
-public record DadosListagemCategoria(String nome, String Descricao) {
+import java.math.BigDecimal;
+
+public record DadosListagemCategoria(Long id, String nome, String Descricao, BigDecimal Orcamento, BigDecimal OrcamentoRestante) {
 }

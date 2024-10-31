@@ -4,6 +4,7 @@ import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.*;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.service.TransacaoService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class TransacaoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transacao> atualizarTransacao(
+    public ResponseEntity<Transacao> atualizar(
             @PathVariable Long id,
             @Valid @RequestBody DadosAtualizaTransacao transacaoAtualizada) {
 
@@ -53,6 +54,14 @@ public class TransacaoController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Transacao> excluir(@PathVariable Long id) {
+
+        Transacao transacao = transacaoService.excluir(id);
+        return  ResponseEntity.ok(transacao);
     }
 
 

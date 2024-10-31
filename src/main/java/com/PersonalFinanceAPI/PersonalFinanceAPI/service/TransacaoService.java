@@ -39,20 +39,24 @@ public class TransacaoService {
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrado"));
 
         Transacao transacao = new Transacao(dados, categoria, usuario);
-        atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor());
+        atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor(), categoria);
 
 
         return transacaoRepository.save(transacao);
     }
 
-    private void atualizarSaldoUsuario(Usuario usuario, TipoTransacao tipo, BigDecimal valor) {
-        System.out.println("Valor: " + valor + "Tipo: " + tipo );
+    private void atualizarSaldoUsuario(Usuario usuario, TipoTransacao tipo, BigDecimal valor, Categoria categoria) {
         if (tipo.equals(TipoTransacao.RECEITA)) {
+            categoria.setOrcamentoRestante(categoria.getOrcamentoRestante().subtract(valor));
+            if(categoria.getOrcamentoRestante().compareTo(BigDecimal.ZERO) < 0) {
+                System.out.println("Orcamento restante menor que zero");
+                EmailService service = new EmailService();
+                service.enviarEmail(usuario.getEmail(), "Orçamento Atingido", "com sua ultima transação da categoria " + categoria.getNome() + " Você atingiu o orçamento predeterminado");
+            }
             usuario.setSaldo(usuario.getSaldo().add(valor));
         } else if (tipo.equals(TipoTransacao.DESPESA)) {
             usuario.setSaldo(usuario.getSaldo().subtract(valor));
         }
-        System.out.println("SALDO: " + usuario.getSaldo());
         usuarioRepository.save(usuario);
     }
 
@@ -85,15 +89,15 @@ public class TransacaoService {
                 transacao.setData(transacaoAtualizada.data());
             }
         }
-        atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor());
+        atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor(), transacao.getCategoria());
         return transacaoRepository.save(transacao);
     }
 
-    public Transacao excluirTransacao(Long id) {
+    public Transacao excluir(Long id) {
         Transacao transacao = transacaoRepository.getReferenceById(id);
         transacao.setAtivo(!transacao.isAtivo());
         transacaoRepository.save(transacao);
-        atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor());
+        atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor(), transacao.getCategoria());
         return transacao;
     }
 

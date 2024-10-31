@@ -1,14 +1,18 @@
 package com.PersonalFinanceAPI.PersonalFinanceAPI.service;
 
+import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosAtualizaCategoria;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosCadastroCategoria;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosListagemCategoria;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Categoria;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.CategoriaRepository;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.UsuarioRepository;
+import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class CategoriaService {
     @Autowired
-    private CategoriaRepository repository;
+    private CategoriaRepository categoriaRepository;
 
 
     @Autowired
@@ -27,12 +31,37 @@ public class CategoriaService {
 
         Categoria categoria = new Categoria(dados, usuario);
 
-        return repository.save(categoria);
+        return categoriaRepository.save(categoria);
 
     }
 
     public List<DadosListagemCategoria> listarCategorias() {
-        List<DadosListagemCategoria> categorias = repository.findAllByAtivoTrue();
+        List<DadosListagemCategoria> categorias = categoriaRepository.findAllByAtivoTrue();
         return categorias;
+    }
+
+    public Categoria atualizarCategoria(Long id, DadosAtualizaCategoria dados) {
+        Categoria categoria = categoriaRepository.getReferenceById(id);
+        {
+            if(dados.nome() != null){
+                categoria.setNome(dados.nome());
+            }
+            if(dados.descricao() != null){
+                categoria.setDescricao(dados.descricao());
+            }
+            if(dados.orcamento() != null){
+                categoria.setOrcamento(dados.orcamento());
+                categoria.setOrcamentoRestante(dados.orcamento());
+            }
+        }
+
+        return categoriaRepository.save(categoria);
+    }
+
+    public Categoria excluir(Long id) {
+        Categoria categoria = categoriaRepository.getReferenceById(id);
+        categoria.setAtivo(!categoria.isAtivo());
+        categoriaRepository.save(categoria);
+        return categoria;
     }
 }

@@ -60,7 +60,7 @@ public class UsuarioController {
     }
         @DeleteMapping("/{id}")
         @Transactional
-        public ResponseEntity<?> excluirusuario(@PathVariable Long id) {
+        public ResponseEntity<?> excluir(@PathVariable Long id) {
 
             Usuario usuario = usuarioService.excluirUsuario(id);
             return  ResponseEntity.ok(usuario);
