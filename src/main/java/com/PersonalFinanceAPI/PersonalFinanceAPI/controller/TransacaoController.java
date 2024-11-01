@@ -1,8 +1,11 @@
 package com.PersonalFinanceAPI.PersonalFinanceAPI.controller;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.*;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Parcela;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.TransacaoRepository;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.service.ParcelaService;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.service.TransacaoService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,13 +22,18 @@ import java.util.List;
 public class TransacaoController {
 
     @Autowired
+    private ParcelaService parcelaService;
+
+    @Autowired
     private TransacaoService transacaoService;
+
+    @Autowired
+    TransacaoRepository repository;
 
     @PostMapping
     public ResponseEntity<Transacao> lancarTransacao(@RequestBody @Valid DadosLancarTransacao dados, @AuthenticationPrincipal UserDetails usuarioLogado) {
 
         Transacao transacao = transacaoService.cadastrarTransacao(dados, ((Usuario) usuarioLogado).getId());
-
         return ResponseEntity.ok(transacao);
     }
 
@@ -34,7 +42,10 @@ public class TransacaoController {
         List<DadosListagemTransacao> transacoes = transacaoService.listarTransacoes();
         return ResponseEntity.ok(transacoes);
     }
-
+    @GetMapping
+    public ResponseEntity<Transacao> buscarTransacaoPorId(@PathVariable Long id){
+        return ResponseEntity.ok(repository.getReferenceById(id));
+    }
     @GetMapping("/filtro")
     public ResponseEntity<List<DadosListagemTransacao>> listarTransacoesPorCategoriaEPeriodo(@RequestBody DadosListarTransacoesPorCategoriaEPorPeriodo dados){
         List<DadosListagemTransacao> transacoes = transacaoService.listarTransacoesPorPeriodoECAtegoria(dados);

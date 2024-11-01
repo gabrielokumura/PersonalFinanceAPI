@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.springframework.security.core.userdetails.memory.UserAttribute;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -29,6 +30,12 @@ public class Transacao {
 
     @Column(nullable = false)
     private BigDecimal valor;
+
+    private int quantidadeParcelas;
+
+    private String periodicidade;  // Ex.: "MENSAL", "SEMANAL"
+
+    private LocalDate dataVencimento;
     private boolean ativo;
 
     @Column(nullable = false)
@@ -122,5 +129,29 @@ public class Transacao {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public int getQuantidadeParcelas() {
+        return quantidadeParcelas;
+    }
+
+    public void setQuantidadeParcelas(int quantidadeParcelas) {
+        this.quantidadeParcelas = quantidadeParcelas;
+    }
+
+    public String getPeriodicidade() {
+        return periodicidade;
+    }
+
+    public void setPeriodicidade(String periodicidade) {
+        this.periodicidade = periodicidade;
+    }
+
+    public LocalDate getDataVencimento() {
+        return dataVencimento;
+    }
+
+    public void setDataVencimento(LocalDate dataVencimento) {
+        this.dataVencimento = dataVencimento;
     }
 }

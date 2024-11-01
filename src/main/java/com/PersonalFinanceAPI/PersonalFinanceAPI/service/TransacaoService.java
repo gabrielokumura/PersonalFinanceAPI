@@ -27,6 +27,9 @@ public class TransacaoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private ParcelaService parcelaService;
+
     public Transacao cadastrarTransacao(DadosLancarTransacao dados, Long usuarioId) {
 
 
@@ -41,6 +44,7 @@ public class TransacaoService {
         Transacao transacao = new Transacao(dados, categoria, usuario);
         atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor(), categoria);
 
+        parcelaService.gerarParcelas(transacao);
 
         return transacaoRepository.save(transacao);
     }
@@ -100,5 +104,6 @@ public class TransacaoService {
         atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor(), transacao.getCategoria());
         return transacao;
     }
+
 
 }
