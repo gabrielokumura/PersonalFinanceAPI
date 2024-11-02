@@ -63,9 +63,11 @@ public class Transacao {
         this.data = dados.data();
         this.tipo = dados.tipo();
         this.categoria = categoria;
+        this.periodicidade = dados.periodicidade();
         this.usuario = usuario;
+        this.dataVencimento = dados.dataVencimento();
+        this.quantidadeParcelas = dados.quantidadeParcelas();
     }
-
 
     public Long getId() {
         return id;

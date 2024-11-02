@@ -2,6 +2,7 @@ package com.PersonalFinanceAPI.PersonalFinanceAPI.service;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.*;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Categoria;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Parcela;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.CategoriaRepository;
@@ -31,10 +32,6 @@ public class TransacaoService {
     private ParcelaService parcelaService;
 
     public Transacao cadastrarTransacao(DadosLancarTransacao dados, Long usuarioId) {
-
-
-
-        System.out.println("entrou no cadastrar transação");
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
@@ -44,21 +41,28 @@ public class TransacaoService {
         Transacao transacao = new Transacao(dados, categoria, usuario);
         atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor(), categoria);
 
+        Transacao transacao1 = transacaoRepository.save(transacao);
         parcelaService.gerarParcelas(transacao);
 
-        return transacaoRepository.save(transacao);
+        return transacao1;
     }
 
     private void atualizarSaldoUsuario(Usuario usuario, TipoTransacao tipo, BigDecimal valor, Categoria categoria) {
         if (tipo.equals(TipoTransacao.RECEITA)) {
-            categoria.setOrcamentoRestante(categoria.getOrcamentoRestante().subtract(valor));
+            usuario.setSaldo(usuario.getSaldo().add(valor));
+        } else if (tipo.equals(TipoTransacao.DESPESA)) {
+            if(categoria.getOrcamentoRestante() != null){
+                if ( categoria.getOrcamentoRestante().compareTo(BigDecimal.ZERO) < 0) {
+                    System.out.println("Orcamento restante menor que zero");
+                    EmailService service = new EmailService();
+                    service.enviarEmail(usuario.getEmail(), "Orçamento Atingido", "com sua ultima transação da categoria " + categoria.getNome() + " Você atingiu o orçamento predeterminado");
+                }
+            }
             if(categoria.getOrcamentoRestante().compareTo(BigDecimal.ZERO) < 0) {
                 System.out.println("Orcamento restante menor que zero");
                 EmailService service = new EmailService();
                 service.enviarEmail(usuario.getEmail(), "Orçamento Atingido", "com sua ultima transação da categoria " + categoria.getNome() + " Você atingiu o orçamento predeterminado");
             }
-            usuario.setSaldo(usuario.getSaldo().add(valor));
-        } else if (tipo.equals(TipoTransacao.DESPESA)) {
             usuario.setSaldo(usuario.getSaldo().subtract(valor));
         }
         usuarioRepository.save(usuario);

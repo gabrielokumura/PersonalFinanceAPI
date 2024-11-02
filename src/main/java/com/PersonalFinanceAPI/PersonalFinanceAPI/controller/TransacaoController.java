@@ -42,7 +42,7 @@ public class TransacaoController {
         List<DadosListagemTransacao> transacoes = transacaoService.listarTransacoes();
         return ResponseEntity.ok(transacoes);
     }
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<Transacao> buscarTransacaoPorId(@PathVariable Long id){
         return ResponseEntity.ok(repository.getReferenceById(id));
     }

@@ -2,9 +2,12 @@ package com.PersonalFinanceAPI.PersonalFinanceAPI.service;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Parcela;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.ParcelaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,18 +15,36 @@ import java.util.List;
 @Service
 public class ParcelaService {
 
+
+    @Autowired
+    private ParcelaRepository parcelaRepository;
     public List<Parcela> gerarParcelas(Transacao transacao) {
         List<Parcela> parcelas = new ArrayList<>();
 
         for (int i = 0; i < transacao.getQuantidadeParcelas(); i++) {
             Parcela parcela = new Parcela();
             parcela.setNumeroParcela(i + 1);
-            parcela.setValorParcela(transacao.getValor().divide(BigDecimal.valueOf(transacao.getQuantidadeParcelas())));
-            parcela.setDataVencimento(calcularDataVencimento(transacao.getDataVencimento(), transacao.getPeriodicidade(), i));
+
+            parcela.setValorParcela(
+                    transacao.getValor()
+                            .divide(
+                                    BigDecimal.valueOf(transacao.getQuantidadeParcelas()),
+                                    2,
+                                    RoundingMode.HALF_UP
+                            )
+            );
+
+            parcela.setDataVencimento(
+                    calcularDataVencimento(
+                            transacao.getDataVencimento(),
+                            transacao.getPeriodicidade(),
+                            i
+                    )
+            );
             parcela.setTransacao(transacao);
             parcelas.add(parcela);
+            parcelaRepository.save(parcela);
         }
-
         return parcelas;
     }
 
