@@ -87,4 +87,12 @@ public class Categoria {
     public void setOrcamento(BigDecimal orcamento) {
         this.orcamento = orcamento;
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

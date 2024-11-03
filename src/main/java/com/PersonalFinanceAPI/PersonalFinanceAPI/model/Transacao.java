@@ -5,6 +5,8 @@ import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.TipoTransacao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.userdetails.memory.UserAttribute;
@@ -28,6 +30,8 @@ public class Transacao {
     @Column(nullable = false, length = 255)
     private String descricao;
 
+    @NotNull
+    @Positive // Para garantir que o valor seja maior que zero
     @Column(nullable = false)
     private BigDecimal valor;
 
@@ -56,7 +60,7 @@ public class Transacao {
     public Transacao() {
     }
 
-    public Transacao(DadosLancarTransacao dados, Categoria categoria, Usuario usuario) {
+    public Transacao(DadosLancarTransacao dados, Categoria categoria) {
         this.descricao = dados.descricao();
         this.valor = dados.valor();
         this.ativo = true;
@@ -64,7 +68,7 @@ public class Transacao {
         this.tipo = dados.tipo();
         this.categoria = categoria;
         this.periodicidade = dados.periodicidade();
-        this.usuario = usuario;
+        this.usuario = categoria.getUsuario();
         this.dataVencimento = dados.dataVencimento();
         this.quantidadeParcelas = dados.quantidadeParcelas();
     }

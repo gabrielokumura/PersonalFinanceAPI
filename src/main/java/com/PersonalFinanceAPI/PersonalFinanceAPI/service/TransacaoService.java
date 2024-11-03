@@ -32,13 +32,11 @@ public class TransacaoService {
     private ParcelaService parcelaService;
 
     public Transacao cadastrarTransacao(DadosLancarTransacao dados, Long usuarioId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         Categoria categoria = categoriaRepository.findById(dados.categoriaId())
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrado"));
 
-        Transacao transacao = new Transacao(dados, categoria, usuario);
+        Transacao transacao = new Transacao(dados, categoria);
         atualizarSaldoUsuario(transacao.getUsuario(), transacao.getTipo(), transacao.getValor(), categoria);
 
         Transacao transacao1 = transacaoRepository.save(transacao);
@@ -53,7 +51,6 @@ public class TransacaoService {
         } else if (tipo.equals(TipoTransacao.DESPESA)) {
             if(categoria.getOrcamentoRestante() != null){
                 if ( categoria.getOrcamentoRestante().compareTo(BigDecimal.ZERO) < 0) {
-                    System.out.println("Orcamento restante menor que zero");
                     EmailService service = new EmailService();
                     service.enviarEmail(usuario.getEmail(), "Orçamento Atingido", "com sua ultima transação da categoria " + categoria.getNome() + " Você atingiu o orçamento predeterminado");
                 }

@@ -26,21 +26,24 @@ public class ParcelaService {
             parcela.setNumeroParcela(i + 1);
 
             parcela.setValorParcela(
-                    transacao.getValor()
-                            .divide(
-                                    BigDecimal.valueOf(transacao.getQuantidadeParcelas()),
-                                    2,
-                                    RoundingMode.HALF_UP
-                            )
+                    transacao.getValor().divide(BigDecimal.valueOf(transacao.getQuantidadeParcelas()), 2, RoundingMode.DOWN)
             );
+            BigDecimal totalCalculado = parcela.getValorParcela().multiply(BigDecimal.valueOf(transacao.getQuantidadeParcelas()));
+            BigDecimal restante = transacao.getValor().subtract(totalCalculado);
+
+            if (i == transacao.getQuantidadeParcelas() - 1) {
+                parcela.setValorParcela(parcela.getValorParcela().add(restante));
+            }
 
             parcela.setDataVencimento(
-                    calcularDataVencimento(
-                            transacao.getDataVencimento(),
-                            transacao.getPeriodicidade(),
-                            i
-                    )
-            );
+                        calcularDataVencimento(
+                                transacao.getDataVencimento(),
+                                transacao.getPeriodicidade(),
+                                i
+                        )
+                );
+
+
             parcela.setTransacao(transacao);
             parcelas.add(parcela);
             parcelaRepository.save(parcela);
