@@ -33,7 +33,7 @@ public class TransacaoController {
     @PostMapping
     public ResponseEntity<Transacao> lancarTransacao(@RequestBody @Valid DadosLancarTransacao dados, @AuthenticationPrincipal UserDetails usuarioLogado) {
 
-        Transacao transacao = transacaoService.cadastrarTransacao(dados, ((Usuario) usuarioLogado).getId());
+        Transacao transacao = transacaoService.cadastrarTransacao(dados);
         return ResponseEntity.ok(transacao);
     }
 

@@ -63,6 +63,7 @@ class ParcelaServiceTest {
 
         BigDecimal valorEsperado = new BigDecimal("1000.00");
         LocalDate dataVencimentoEsperada =  LocalDate.of(2024, 12, 5);
+
         when(parcelaRepository.save(any(Parcela.class))).thenReturn(null);
 
         // Chama o método a ser testado

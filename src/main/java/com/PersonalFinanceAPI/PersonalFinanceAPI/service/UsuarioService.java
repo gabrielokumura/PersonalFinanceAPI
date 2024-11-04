@@ -18,12 +18,14 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService {
-
-    @Autowired
     private UsuarioRepository usuarioRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UsuarioService (UsuarioRepository usuarioRepository,PasswordEncoder passwordEncoder){
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Usuario cadastrarUsuario(DadosCadastroUsuario dados){
         String senhaCriptografada = passwordEncoder.encode(dados.senha());
