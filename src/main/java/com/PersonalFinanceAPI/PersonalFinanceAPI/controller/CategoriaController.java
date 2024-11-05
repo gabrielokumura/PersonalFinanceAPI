@@ -45,14 +45,12 @@ public class CategoriaController {
     public ResponseEntity<Categoria> atualizar(@PathVariable Long id,
                                                @Valid @RequestBody DadosAtualizaCategoria dados){
         Categoria categoria = categoriaService.atualizarCategoria(id, dados);
-
         return ResponseEntity.ok(categoria);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> excluir(@PathVariable Long id) {
-
         Categoria categoria = categoriaService.excluir(id);
         return  ResponseEntity.ok(categoria);
     }

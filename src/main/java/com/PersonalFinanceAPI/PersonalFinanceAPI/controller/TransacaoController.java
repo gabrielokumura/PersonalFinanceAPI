@@ -1,6 +1,7 @@
 package com.PersonalFinanceAPI.PersonalFinanceAPI.controller;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.*;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.infra.TratadorDeErro.TransacaoNaoEncontradaException;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Parcela;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
@@ -20,19 +21,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/transacao")
 public class TransacaoController {
-
-    @Autowired
-    private ParcelaService parcelaService;
-
-    @Autowired
     private TransacaoService transacaoService;
-
-    @Autowired
     TransacaoRepository repository;
+    @Autowired
+    public TransacaoController(TransacaoService transacaoService,TransacaoRepository repository){
+        this.repository = repository;
+        this.transacaoService = transacaoService;
+    }
 
     @PostMapping
-    public ResponseEntity<Transacao> lancarTransacao(@RequestBody @Valid DadosLancarTransacao dados, @AuthenticationPrincipal UserDetails usuarioLogado) {
-
+    public ResponseEntity<Transacao> lancarTransacao(@Valid @RequestBody DadosLancarTransacao dados, @AuthenticationPrincipal UserDetails usuarioLogado) {
+        System.out.println("Entrei no controller");
         Transacao transacao = transacaoService.cadastrarTransacao(dados);
         return ResponseEntity.ok(transacao);
     }
@@ -44,7 +43,8 @@ public class TransacaoController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<Transacao> buscarTransacaoPorId(@PathVariable Long id){
-        return ResponseEntity.ok(repository.getReferenceById(id));
+        Transacao transacao = repository.findById(id).orElseThrow(() -> new TransacaoNaoEncontradaException(id));
+        return ResponseEntity.ok(transacao);
     }
     @GetMapping("/filtro")
     public ResponseEntity<List<DadosListagemTransacao>> listarTransacoesPorCategoriaEPeriodo(@RequestBody DadosListarTransacoesPorCategoriaEPorPeriodo dados){
@@ -74,7 +74,4 @@ public class TransacaoController {
         Transacao transacao = transacaoService.excluir(id);
         return  ResponseEntity.ok(transacao);
     }
-
-
-
 }

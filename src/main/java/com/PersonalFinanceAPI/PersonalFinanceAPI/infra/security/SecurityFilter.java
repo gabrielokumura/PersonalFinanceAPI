@@ -16,20 +16,18 @@ import java.io.IOException;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
-
-    @Autowired
     private TokenService tokenService;
-
-    @Autowired
     private UsuarioRepository repository;
-
+    @Autowired
+    public SecurityFilter (TokenService tokenService,UsuarioRepository repository){
+        this.tokenService = tokenService;
+        this.repository = repository;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         var tokenJWT = recuperarToken(request);
         if(tokenJWT != null){
-
             var subject = tokenService.getSubject(tokenJWT);
             var usuario = repository.findByEmail(subject);
 
@@ -44,8 +42,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(authorizationHeader != null){
             return authorizationHeader.replace("Bearer ", "");
         }
-
         return null;
-
     }
 }

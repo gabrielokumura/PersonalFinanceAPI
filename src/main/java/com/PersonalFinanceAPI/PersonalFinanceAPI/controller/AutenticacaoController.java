@@ -19,16 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/login")
 public class AutenticacaoController {
 
+
+    private final TokenService tokenService;
+
+    private final AuthenticationManager authenticationManager;
+
     @Autowired
-    private TokenService tokenService;
-    @Autowired
-    private AuthenticationManager manager;
+    public AutenticacaoController(AuthenticationManager authenticationManager,TokenService tokenService){
+        this.tokenService = tokenService;
+        this.authenticationManager = authenticationManager;
+    }
     @PostMapping
-    public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados){
+    public ResponseEntity<DadosTokenJWT> efetuarLogin(@RequestBody @Valid DadosAutenticacao dados){
         System.out.println("Tentativa de login do usuario: " + dados.email() + ", senha: " + dados.senha());
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(),dados.senha());
         try{
-            var authentication = manager.authenticate(authenticationToken);
+            var authentication = authenticationManager.authenticate(authenticationToken);
             var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
             System.out.println("token gerado com sucesso");
             return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
