@@ -2,18 +2,14 @@ package com.PersonalFinanceAPI.PersonalFinanceAPI.service;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.*;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Categoria;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Parcela;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.CategoriaRepository;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.TransacaoRepository;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.UsuarioRepository;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository.CategoriaRepository;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository.TransacaoRepository;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,12 +35,13 @@ public class TransacaoService {
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrado"));
 
         Transacao transacao = new Transacao(dados, categoria);
+        System.out.println("Service" + transacao);
         atualizarSaldoUsuario(transacao);
 
-        Transacao transacao1 = transacaoRepository.save(transacao);
+        transacaoRepository.save(transacao);
         parcelaService.gerarParcelas(transacao);
 
-        return transacao1;
+        return transacao;
     }
 
     public void atualizarSaldoUsuario(Transacao transacao) {

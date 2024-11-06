@@ -2,19 +2,19 @@ package com.PersonalFinanceAPI.PersonalFinanceAPI.controller;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosAtualizaUsuario;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosCadastroUsuario;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosListagemCategoria;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosListagemUsuario;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.UsuarioDTO;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.UsuarioRepository;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository.UsuarioRepository;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.service.UsuarioService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
@@ -45,15 +45,15 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizarUsuario(
+    public ResponseEntity<UsuarioDTO> atualizarUsuario(
             @PathVariable Long id,
-            @Valid @RequestBody DadosAtualizaUsuario usuarioAtualizado) {
+            @Valid @RequestBody DadosAtualizaUsuario usuarioAtualizado) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
         // Chame o serviço para atualizar a transação
-        Usuario usuario = usuarioService.atualizarUsuario(id,usuarioAtualizado);
+        UsuarioDTO usuarioDTO = usuarioService.atualizarUsuario(id,usuarioAtualizado);
 
-        if (usuario != null) {
-            return ResponseEntity.ok(usuario);
+        if (usuarioDTO != null) {
+            return ResponseEntity.ok(usuarioDTO);
         } else {
             return ResponseEntity.notFound().build();
         }

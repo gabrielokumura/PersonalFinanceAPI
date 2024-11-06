@@ -1,12 +1,11 @@
 package com.PersonalFinanceAPI.PersonalFinanceAPI.controller;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosAtualizaCategoria;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosAtualizaTransacao;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosCadastroCategoria;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosListagemCategoria;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Categoria;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.CategoriaRepository;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository.CategoriaRepository;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.service.CategoriaService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

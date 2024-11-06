@@ -2,11 +2,8 @@ package com.PersonalFinanceAPI.PersonalFinanceAPI.controller;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.*;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.infra.TratadorDeErro.TransacaoNaoEncontradaException;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Parcela;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.TransacaoRepository;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.service.ParcelaService;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository.TransacaoRepository;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.service.TransacaoService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -31,8 +28,8 @@ public class TransacaoController {
 
     @PostMapping
     public ResponseEntity<Transacao> lancarTransacao(@Valid @RequestBody DadosLancarTransacao dados, @AuthenticationPrincipal UserDetails usuarioLogado) {
-        System.out.println("Entrei no controller");
         Transacao transacao = transacaoService.cadastrarTransacao(dados);
+        System.out.println(transacao);
         return ResponseEntity.ok(transacao);
     }
 

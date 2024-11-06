@@ -2,7 +2,7 @@ package com.PersonalFinanceAPI.PersonalFinanceAPI.service;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Parcela;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.ParcelaRepository;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository.ParcelaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

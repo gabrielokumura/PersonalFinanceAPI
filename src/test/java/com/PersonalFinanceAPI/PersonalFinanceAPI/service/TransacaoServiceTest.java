@@ -6,14 +6,13 @@ import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.TipoTransacao;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Categoria;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Transacao;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Usuario;
-import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.UsuarioRepository;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;

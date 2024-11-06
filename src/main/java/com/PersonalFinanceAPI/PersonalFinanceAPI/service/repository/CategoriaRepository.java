@@ -1,4 +1,4 @@
-package com.PersonalFinanceAPI.PersonalFinanceAPI.repository;
+package com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository;
 
 import com.PersonalFinanceAPI.PersonalFinanceAPI.dto.DadosListagemCategoria;
 import com.PersonalFinanceAPI.PersonalFinanceAPI.model.Categoria;
