@@ -21,6 +21,7 @@ public class CategoriaService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     public Categoria cadastrarCategoria(DadosCadastroCategoria dados, Long usuarioId) {
 
         Usuario usuario = usuarioRepository.getReferenceById(usuarioId);
