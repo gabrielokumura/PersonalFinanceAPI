@@ -1,4 +1,6 @@
 package com.PersonalFinanceAPI.PersonalFinanceAPI.dto;
 
-public record MetaFinanceiraDTO() {
+import java.time.LocalDate;
+
+public record MetaFinanceiraDTO(String nome, LocalDate prazo, Double valorAlvo) {
 }

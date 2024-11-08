@@ -25,7 +25,7 @@ public class MetaFinanceiraService {
 
         MetaFinanceira metaFinanceira = new MetaFinanceira(dados, usuario);
 
-        return metaFinanceiraRepository.save(dados);
+        return metaFinanceiraRepository.save(metaFinanceira);
 
 
 
