@@ -1,6 +1,6 @@
 package com.PersonalFinanceAPI.PersonalFinanceAPI;
 
-import com.PersonalFinanceAPI.PersonalFinanceAPI.service.repository.UsuarioRepository;
+import com.PersonalFinanceAPI.PersonalFinanceAPI.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
